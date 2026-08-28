@@ -1,0 +1,40 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 200,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "manifest",
+      "reason": "Each round wraps the single manifest read (_read_staged) tightly between barrier.wait() at the top and barrier.wait() right after, so every rank must sit at the second barrier until the slowest rank's manifest read finishes, coupling all ranks; this happens once per round for 200 rounds.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 2000,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "sidecar",
+      "reason": "After the manifest barrier, each rank loops over its own sidecars with _read and no barrier immediately follows, so while one rank reads a sidecar the others are doing their own sidecar/shard reads rather than waiting on it; the loop runs sidecars_per_rank(cell) (>=10) times per round across 200 rounds, i.e. 2000 reads per rank.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 400,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "shard",
+      "reason": "Shard reads occur in the same unguarded stretch after the sidecar loop, executed via the blocking _read call with no barrier separating ranks until the next round's manifest phase, so each rank only blocks itself; cell.shards_per_rank (2) shard reads happen per round for 200 rounds, giving 400 reads per rank.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 0,
+  "scenario": "s1",
+  "source_sha": "34a2f6d580ef",
+  "usage": {
+    "input": 4270,
+    "output": 5500
+  }
+}

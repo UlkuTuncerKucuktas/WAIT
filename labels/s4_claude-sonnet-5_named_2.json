@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "results",
+      "reason": "write_staged() calls os.fsync then os.close before returning, so the writing rank stalls on each of the generations*tasks_per_rank (4*50=200) calls inside the per-rank loop in measure(), while other ranks are simultaneously doing their own independent writes between the generation-level barrier.wait() calls, so only the calling rank is blocked.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "diagnostics",
+      "reason": "write_buffered() only does os.write/os.close with no fsync, so the call returns once buffered and the rank proceeds immediately to the next task without waiting on durability, and this happens once per (generation, task) pair (4*50=200) per rank inside the same unsynchronized per-rank loop, so no other rank is held up by it either.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 2,
+  "scenario": "s4",
+  "source_sha": "6899bed0df27",
+  "usage": {
+    "input": 3247,
+    "output": 1898
+  }
+}

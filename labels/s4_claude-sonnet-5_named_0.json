@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "results",
+      "reason": "write_staged calls os.fsync before close, so the writing rank blocks on each of the GENERATIONS*TASKS_PER_RANK=200 writes per rank until data is durable, while other ranks are inside their own task loop between barrier.wait() calls rather than waiting on this specific access.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "diagnostics",
+      "reason": "write_buffered only does os.write/os.close with no fsync, so the write lands in page cache and the rank does not wait for physical completion, and again no other rank is synchronized on that specific access since the barrier only occurs once per generation, giving 4 generations * 50 tasks = 200 accesses per rank.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 0,
+  "scenario": "s4",
+  "source_sha": "6899bed0df27",
+  "usage": {
+    "input": 3247,
+    "output": 599
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "In _consume the read is aborted once 'probe.NS() - started > budget_ns', a budget broadcast from producer 0's write time, and while the single per-file read happens every producer/idle rank is already parked at the trailing barrier.wait(), so the whole job stalls on that one deadline-bound read per file per unit.",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "_report re-reads each class_b file CLASS_B_READS(=8) times in a plain loop with no time check, and since it only runs on the consumer after _consume while all other ranks already wait at the trailing barrier.wait(), each of those 8 reads blocks the entire job until it finishes.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 4,
+  "scenario": "s3",
+  "source_sha": "3e32ab8d7bae",
+  "usage": {
+    "input": 3933,
+    "output": 10393
+  }
+}

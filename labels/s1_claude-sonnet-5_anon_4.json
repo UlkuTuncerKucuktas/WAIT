@@ -1,0 +1,40 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "manifest",
+      "reason": "Each class_a read is bracketed by barrier.wait() calls before and after in measure(), so every rank is held at the following barrier until the slowest rank's read completes, and since the path includes round_index each round's file is distinct and read only once.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "shard",
+      "reason": "After the second barrier.wait() each rank loops through its own class_b reads independently (no other rank is held at a sync point during this), and because class_b's path only depends on rank and index (not round), the same file is re-read once per round across all 200 rounds by that rank.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "sidecar",
+      "reason": "Like class_b, class_c reads occur after the barrier in each rank's private loop while other ranks do their own reads, so no cross-rank stall occurs; since class_c's path depends only on rank and index, not round, each specific file is read once per round for all 200 rounds by the same rank.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 4,
+  "scenario": "s1",
+  "source_sha": "7236821e1547",
+  "usage": {
+    "input": 4289,
+    "output": 4718
+  }
+}

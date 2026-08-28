@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.DS_Store
+
+# Working directories the campaign creates under scratch.  Everything a result
+# depends on lives in out/ and is tracked -- scratch is purged after ~30 days,
+# so git is the only durable store for the dataset.
+runs/
+scratch/
+
+# Nothing under out/ is ignored.  Scratch is purged after ~30 days, so git is the
+# only durable store for the dataset, and a table nobody can check against a
+# ledger is not evidence.  Superseded runs are committed too: analysis narrows to
+# one code revision and reports which, so the record shows what was measured
+# before a fix as well as after.

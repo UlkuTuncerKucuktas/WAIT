@@ -1,0 +1,18 @@
+snapshot_time             1787522387.330889340 secs.nsecs
+start_time                1785736192.423671608 secs.nsecs
+elapsed_time              1786194.907217732 secs.nsecs
+close                     66531688 samples [reqs]
+create                    4580161 samples [reqs]
+enqueue                   704596 samples [reqs]
+getattr                   766887 samples [reqs]
+intent_lock               8907280478 samples [reqs]
+link                      608530 samples [reqs]
+rename                    937963 samples [reqs]
+setattr                   4007417 samples [reqs]
+fsync                     300336 samples [reqs]
+read_page                 134243032 samples [reqs]
+unlink                    12267672 samples [reqs]
+setxattr                  1485508 samples [reqs]
+getxattr                  23175731 samples [reqs]
+intent_getattr_async      44125117 samples [reqs]
+revalidate_lock           281835146 samples [reqs]

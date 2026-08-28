@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "results",
+      "reason": "write_staged() opens, writes, then explicitly calls os.fsync() before returning, so the issuing rank stalls until the data is durable, while the surrounding barrier.wait() only synchronizes generation boundaries, not this individual write, so only that rank blocks.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "diagnostics",
+      "reason": "write_buffered() only opens, writes, and closes with no fsync, so the write just lands in the page cache and the rank continues immediately, overlapping the durability work with subsequent computation while other ranks proceed with their own writes unaffected.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 0,
+  "scenario": "s4",
+  "source_sha": "ea2be59a87e8",
+  "usage": {
+    "input": 3245,
+    "output": 1345
+  }
+}

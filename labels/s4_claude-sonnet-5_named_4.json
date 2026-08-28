@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "results",
+      "reason": "write_staged calls os.fsync before close, so the rank issuing it stalls on the fsync inside the timed per-task loop while other ranks proceed independently, and each rank writes GENERATIONS*TASKS_PER_RANK=4*50=200 result files.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "diagnostics",
+      "reason": "probe.write_buffered only does os.write/os.close with no fsync, so the write can be absorbed by the OS cache and overlapped with subsequent work rather than blocking the rank, and each rank issues one write per task across GENERATIONS*TASKS_PER_RANK=4*50=200 iterations.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 4,
+  "scenario": "s4",
+  "source_sha": "6899bed0df27",
+  "usage": {
+    "input": 3247,
+    "output": 710
+  }
+}

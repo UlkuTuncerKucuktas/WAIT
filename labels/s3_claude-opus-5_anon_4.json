@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "_consume reads each class_a file once per unit and aborts with `missed=True` when `probe.NS() - started > budget_ns` (the budget broadcast from the slowest producer), a hard time window, while all other ranks sit at the per-unit `barrier.wait()` until the consumer finishes.",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "_report loops `for _pass in range(CLASS_B_READS)` re-reading each class_b file 8 times with no budget_ns check, and the consumer must finish these reads before the trailing `barrier.wait()` releases the producers.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 4,
+  "scenario": "s3",
+  "source_sha": "3e32ab8d7bae",
+  "usage": {
+    "input": 3933,
+    "output": 998
+  }
+}

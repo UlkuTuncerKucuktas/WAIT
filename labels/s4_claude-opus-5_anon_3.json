@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "results",
+      "reason": "Each class_b file is written by probe.write_staged, whose os.write is followed by os.fsync before the loop can continue, so the writing rank stalls on durability; the barrier.wait() only occurs at generation boundaries, so peer ranks are meanwhile writing their own r%d files rather than waiting on this file.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "diagnostics",
+      "reason": "class_a goes through probe.write_buffered, which opens, os.write's and closes with no fsync, so the 4 KiB write is left to page-cache writeback overlapping later tasks, and only the issuing rank touches its own per-rank path between barriers.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 3,
+  "scenario": "s4",
+  "source_sha": "ea2be59a87e8",
+  "usage": {
+    "input": 3245,
+    "output": 656
+  }
+}

@@ -1,0 +1,5 @@
+arm,repeats,drop_rate,drop_spread,consume_ms,budget_ms
+default,7,0.8,0.25,27.612418,27.327814
+heuristic,7,0.9,0.25,27.256599,26.858136
+size,7,0.45,0.05,21.436285,27.07753
+wait,7,0.0,0.0,17.151263,26.616766

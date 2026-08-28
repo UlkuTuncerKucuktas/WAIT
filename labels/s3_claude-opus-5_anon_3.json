@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "_consume reads each class_a file once per unit under the broadcast `budget_ns`, abandoning the rest (`if budget_ns and probe.NS() - started > budget_ns: return staged, True`), so the read must fit a time window; per the writer/reader rule only the consumer rank is waiting on its own read.",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "_report loops `for _pass in range(CLASS_B_READS)` doing plain probe.read_staged with no budget check, so the consumer rank simply stalls on each of the 8 reads of a given file while other ranks are only writing their own data.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 3,
+  "scenario": "s3",
+  "source_sha": "3e32ab8d7bae",
+  "usage": {
+    "input": 3933,
+    "output": 1437
+  }
+}

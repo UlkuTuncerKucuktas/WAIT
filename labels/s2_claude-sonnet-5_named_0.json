@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "tiles",
+      "reason": "tiles are read by the separate `_prefetch` process via `probe.read_staged` and staged into a queue while the main loop keeps sleeping `compute_s`, so the reading rank's own work is overlapped rather than stalled, though `queue.get()` may briefly wait for the prefetch to catch up.",
+      "regime": "hidden"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "masks",
+      "reason": "in `measure`, the main loop calls `probe.read_staged(path_for(workdir,\"masks\",i,placing), ITEM_BYTES)` synchronously each iteration and only proceeds to `probe.sleep_seconds(compute_s)` after it returns, so the rank stops and waits on each mask read, and no other rank/process is held up by it since the prefetch worker keeps running independently.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 0,
+  "scenario": "s2",
+  "source_sha": "54ca8e0fcd3e",
+  "usage": {
+    "input": 3098,
+    "output": 1249
+  }
+}

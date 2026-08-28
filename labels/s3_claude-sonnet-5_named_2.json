@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "In _consume the single reader rank reads each index file exactly once via probe.read_staged, but checks probe.NS()-started against budget_ns each iteration and aborts (dropping remaining files) if the per-unit deadline is exceeded, while every other rank is meanwhile held at the barrier.broadcast/barrier.wait() calls until this finishes, coupling the whole job to that one access.",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "_report re-reads every statistics file STATISTICS_READS (8) times in a plain nested loop with no timing check, so the consumer rank simply blocks until all reads finish, and because the loop ends in barrier.wait() every other rank is stalled at that synchronisation point for the whole duration of these reads.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 2,
+  "scenario": "s3",
+  "source_sha": "7925d2c40b88",
+  "usage": {
+    "input": 3921,
+    "output": 8864
+  }
+}

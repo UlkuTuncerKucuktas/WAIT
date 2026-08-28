@@ -1,0 +1,40 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "manifest",
+      "reason": "Each round's manifest read (_read_staged(manifest(workdir, r, placing), ...)) is sandwiched between two barrier.wait() calls, so every other rank is held at the second barrier until the reading rank finishes, coupling all ranks to that single access; since the path embeds the round index r, each distinct manifest file is opened and read exactly once per rank, and no time budget is enforced on it.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "sidecar",
+      "reason": "The sidecar reads (`for i in range(sidecars_per_rank(cell)): _read(sidecar(workdir, me, i, placing), SIDECAR_BYTES)`) occur after the round's barrier pair with no further synchronization point, so while one rank reads its sidecars the others are doing their own independent sidecar/shard work rather than waiting, meaning only the accessing rank blocks; because the index i does not depend on the round r, the same sidecar file is reopened and read once per round for all cell.rounds=200 rounds.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "shard",
+      "reason": "The shard reads (`for i in range(cell.shards_per_rank): _read(shard(workdir, me, i), SHARD_BYTES)`) run in the same unguarded segment as the sidecar reads, with no barrier forcing other ranks to wait on this specific access, so only the reading rank is blocked; since shard(workdir, rank, i) doesn't vary with round index, the same shard file is re-read every one of the cell.rounds=200 iterations, and there is no deadline logic around it.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 3,
+  "scenario": "s1",
+  "source_sha": "34a2f6d580ef",
+  "usage": {
+    "input": 4270,
+    "output": 3858
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "In _consume the consumer aborts further reads once probe.NS()-started exceeds budget_ns ('if budget_ns and probe.NS() - started > budget_ns: return staged, True'), so each index file must be read within that time window, and each specific index path is read exactly once by the consumer per unit; only the consumer rank waits on that read, per the writer/reader independence rule.",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "_report loops STATISTICS_READS (8) times over the same statistics paths calling probe.read_staged synchronously with no time check, so the consumer rank blocks on each of the 8 reads of the same file with no deadline, and only that consumer rank waits (the producer that wrote it is unaffected).",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 1,
+  "scenario": "s3",
+  "source_sha": "7925d2c40b88",
+  "usage": {
+    "input": 3921,
+    "output": 4626
+  }
+}

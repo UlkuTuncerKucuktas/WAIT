@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "_consume reads each index file once per unit under `if budget_ns and probe.NS() - started > budget_ns: return staged, True`, abandoning remaining reads when the broadcast producer-time budget expires, while every other rank is held at the trailing `barrier.wait()` until the consumer finishes.",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "_report loops `for _pass in range(STATISTICS_READS)` re-reading each statistics file 8 times with no budget/time check, and this synchronous read work sits before the per-unit `barrier.wait()` that pins all other ranks.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 3,
+  "scenario": "s3",
+  "source_sha": "7925d2c40b88",
+  "usage": {
+    "input": 3921,
+    "output": 983
+  }
+}

@@ -1,0 +1,9 @@
+tier,stage,microseconds,ost_bulk_rpcs_per_file
+dom,open,315.3,
+dom,fstat,26.8,
+dom,read,9.5,
+dom,total,351.6,0.00
+ost,open,270.9,
+ost,fstat,265.3,
+ost,read,431.3,
+ost,total,967.5,3.00

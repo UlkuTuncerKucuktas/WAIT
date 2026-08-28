@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "tiles",
+      "reason": "class_b files are read only inside the background _prefetch subprocess (probe.read_staged in the worker loop), overlapped with the main rank's compute sleep, and the main loop only ever blocks on queue.get(), not on the read itself, so no rank waits directly on the I/O.",
+      "regime": "hidden"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "masks",
+      "reason": "class_a files are read synchronously in the main measure() loop via probe.read_staged(path_for(...,'class_a',...)) before the compute sleep, so the issuing rank stalls on each read (gated.append(...)), while no other rank or process is held up by it, and each indexed file is opened/read exactly once.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 4,
+  "scenario": "s2",
+  "source_sha": "57f8a88e7aec",
+  "usage": {
+    "input": 3103,
+    "output": 1538
+  }
+}

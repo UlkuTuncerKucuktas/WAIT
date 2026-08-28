@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "masks",
+      "reason": "In measure(), probe.read_staged() for class_a is called directly in the main loop and its result is used before sleep_seconds(compute_s) runs, so the rank stalls on each read (captured as gated/class_a_stall_ns) rather than overlapping it with compute.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "tiles",
+      "reason": "class_b files are read inside the separate _prefetch worker process ahead of need and pushed onto a bounded queue, so the main rank's compute (sleep_seconds(compute_s)) proceeds concurrently with those reads, only occasionally waiting briefly on queue.get() rather than on the read itself.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 1,
+  "scenario": "s2",
+  "source_sha": "57f8a88e7aec",
+  "usage": {
+    "input": 3103,
+    "output": 1278
+  }
+}

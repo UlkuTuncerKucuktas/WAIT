@@ -1,0 +1,40 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "manifest",
+      "reason": "Each round every rank hits `barrier.wait()` and then synchronously `_read_staged(manifest(workdir, r, placing))` before the next `barrier.wait()`, so all ranks are held at the barrier until the slowest rank's single read of that round's file m%d completes (one read per rank per manifest file).",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "sidecar",
+      "reason": "After the post-manifest barrier each rank does its own `_read(sidecar(workdir, me, i, placing))` on its private files with no intervening barrier, and the same sidecar index is re-read in each of the 200 rounds.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "shard",
+      "reason": "Each rank synchronously `_read(shard(workdir, me, i), SHARD_BYTES)` on its own shard files outside any barrier region, repeated once per shard for all 200 rounds.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 1,
+  "scenario": "s1",
+  "source_sha": "34a2f6d580ef",
+  "usage": {
+    "input": 4270,
+    "output": 730
+  }
+}

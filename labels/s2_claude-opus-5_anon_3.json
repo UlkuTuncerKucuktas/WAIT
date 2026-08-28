@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "masks",
+      "reason": "In the main loop each iteration calls probe.read_staged on the class_a path inline and times it as 'gated' stall before probe.sleep_seconds(compute_s), so the rank itself waits on this read with no other rank held at a barrier.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "tiles",
+      "reason": "class_b items are read once each by the separate _prefetch process feeding a bounded queue while the main loop computes, so the read is overlapped rather than waited on, and only the prefetching process is involved.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 3,
+  "scenario": "s2",
+  "source_sha": "57f8a88e7aec",
+  "usage": {
+    "input": 3103,
+    "output": 468
+  }
+}

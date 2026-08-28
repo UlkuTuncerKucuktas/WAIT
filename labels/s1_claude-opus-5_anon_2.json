@@ -1,0 +1,40 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "manifest",
+      "reason": "Each round every rank is held at barrier.wait() and then reads the same shared class_a file m%d for that round via _read_staged, so all ranks are blocked on that one file, and each rank touches a given round's file exactly once.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "shard",
+      "reason": "After the post-class_a barrier each rank synchronously _read()s its own r%d/s%d class_b files while other ranks do their own reads, and the per-rank file is re-read in each of the 200 rounds.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "sidecar",
+      "reason": "Each rank blocks on _read() of its private class_cs/r%d/s%d files in the per-round loop with no barrier between ranks' private reads, so the same file is read once per round for 200 rounds.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 2,
+  "scenario": "s1",
+  "source_sha": "7236821e1547",
+  "usage": {
+    "input": 4289,
+    "output": 603
+  }
+}

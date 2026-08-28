@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "In _consume the read loop explicitly checks `if budget_ns and probe.NS() - started > budget_ns: return staged, True`, so the index files must be read within the broadcasted time budget or the remaining reads for that unit are dropped, and since producers/idle ranks skip straight to the shared `barrier.wait()` while only the consumer performs `_consume`, every rank is held at that barrier until the consumer's bounded read (or early abort) finishes, and each specific index file is read exactly once per rank (`for p in range(PRODUCERS): for i in range(per_producer(cell)): staged.append(probe.read_staged(...))`).",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "`_report` runs `for _pass in range(STATISTICS_READS): for p in range(PRODUCERS): for i in range(per_producer(cell)): probe.read_staged(...)` with STATISTICS_READS=8 and no time budget check, so a single rank synchronously reads each statistics file eight times before continuing; because every other rank is already waiting at the trailing `barrier.wait()` while the consumer executes `_report`, that access blocks the whole job even though it has no deadline.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 3,
+  "scenario": "s3",
+  "source_sha": "7925d2c40b88",
+  "usage": {
+    "input": 3921,
+    "output": 8561
+  }
+}

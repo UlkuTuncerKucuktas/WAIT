@@ -1,0 +1,40 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "manifest",
+      "reason": "Each round's class_a file path depends on the round index (m%d % round_index), so a given file is read only once, and the barrier.wait() calls immediately before and after the read force every rank to synchronize around this single access, holding all ranks until it completes.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "sidecar",
+      "reason": "The class_c read (os.pread in _read) is a synchronous call that blocks only the calling rank since it happens inside a per-rank for-loop with no barrier around it, and because the file path does not depend on the round index r, the same file is reread once per round for all 200 rounds.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "shard",
+      "reason": "Like class_c, class_b files are read via a blocking os.pread inside an unguarded per-rank loop with no barrier isolating individual accesses, and since the file path (rank, index) is independent of round r, each file is re-read once per round across all 200 rounds.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 3,
+  "scenario": "s1",
+  "source_sha": "7236821e1547",
+  "usage": {
+    "input": 4289,
+    "output": 1817
+  }
+}

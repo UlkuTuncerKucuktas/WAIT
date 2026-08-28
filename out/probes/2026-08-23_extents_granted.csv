@@ -1,0 +1,8 @@
+requested,granted_bytes,truncated
+128K,131072,no
+256K,262144,no
+512K,524288,no
+1M,1048576,no
+2M,1048576,yes
+4M,1048576,yes
+32K,,refused

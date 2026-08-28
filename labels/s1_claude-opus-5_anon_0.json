@@ -1,0 +1,40 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "manifest",
+      "reason": "Each round is bracketed by barrier.wait() before and after the _read_staged of class_a(workdir, r, placing), so every rank is held at the synchronisation point while that one shared per-round file is read, and each rank reads a given round's file exactly once.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "shard",
+      "reason": "Each rank synchronously _read's its own class_b(workdir, me, i) files after the barrier while other ranks do their own private reads, and the loop over cell.class_bs_per_rank sits inside the 200-round loop so each file is read once per round.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "sidecar",
+      "reason": "The per-rank class_c(workdir, me, i, placing) reads are blocking _read calls made after the barrier is passed, private to the reading rank, and repeated in every one of the cell.rounds=200 iterations.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 0,
+  "scenario": "s1",
+  "source_sha": "7236821e1547",
+  "usage": {
+    "input": 4289,
+    "output": 661
+  }
+}

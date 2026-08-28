@@ -1,0 +1,6 @@
+arm,tier,open_ns,fstat_ns,read_ns,total_ns,ost_bulk_rpcs
+floor,shm,3048,2506,15136,22468,0
+right,dom,434695,25456,36342,534635,0
+right,ost,314334,281413,639102,1277994,100
+wrong,dom,117738,10009,14607,155720,0
+wrong,ost,93892,10548,13308,130422,0

@@ -1,0 +1,40 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "manifest",
+      "reason": "Each round's class_a read is sandwiched between barrier.wait() calls, so the barrier after the read holds every rank until all have finished reading, coupling all ranks to that single access, and since the file name depends on the round index a given file is touched only once.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "shard",
+      "reason": "_read(class_b(...)) is called synchronously inside the per-round loop with no intervening barrier, so the calling rank stops for the pread but other ranks proceed independently on their own class_b reads, and since the same file index is re-read every one of the cell.rounds=200 rounds, a single file is accessed 200 times by that rank.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "sidecar",
+      "reason": "The for-loop over class_cs_per_rank calls _read(class_c(...)) directly with no barrier around it, so only the issuing rank waits on each pread while others continue their own loops, and because this loop runs inside the outer cell.rounds=200 loop, the same indexed file is read 200 times by that rank.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 0,
+  "scenario": "s1",
+  "source_sha": "7236821e1547",
+  "usage": {
+    "input": 4289,
+    "output": 3085
+  }
+}

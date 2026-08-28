@@ -1,0 +1,6 @@
+layout,file_size_kib,components_instantiated,ost_objects
+"-E 128K -L mdt -E 8M -c 1 -S 1M -p flash -E -1 -c 8 -S 16M -p disk",64,1,0
+"-E 128K -L mdt -E 8M -c 1 -S 1M -p flash -E -1 -c 8 -S 16M -p disk",200,2,1
+"-E 128K -L mdt -E 8M -c 1 -S 1M -p flash -E -1 -c 8 -S 16M -p disk",4096,2,1
+"-E 128K -L mdt -E 8M -c 1 -S 1M -p flash -E -1 -c 8 -S 16M -p disk",65536,3,9
+"-c 24 (plain, touch)",0,,24

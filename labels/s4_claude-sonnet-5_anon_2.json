@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "results",
+      "reason": "write_staged explicitly calls os.fsync before os.close and the timing of create/write/fsync is captured synchronously in the task loop, so the writing rank stalls until the fsync completes before starting the next task.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "diagnostics",
+      "reason": "write_buffered only opens, writes and closes with no fsync, so the write is buffered by the OS and the rank proceeds to the next task without waiting for durability, overlapping the class_b staged write and fsync work.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 2,
+  "scenario": "s4",
+  "source_sha": "ea2be59a87e8",
+  "usage": {
+    "input": 3245,
+    "output": 990
+  }
+}

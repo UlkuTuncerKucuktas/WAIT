@@ -1,0 +1,10 @@
+file_size_kib,stage,dom_ms_per_rank,ost_ms_per_rank,margin_ms
+4,create,43.4,49.0,5.6
+4,write,35.9,24.8,-11.0
+4,fsync,78.3,107.4,29.1
+16,create,44.6,48.6,4.1
+16,write,40.3,28.6,-11.7
+16,fsync,87.5,116.0,28.5
+64,create,47.1,49.1,2.0
+64,write,55.0,42.8,-12.2
+64,fsync,115.6,140.4,24.8

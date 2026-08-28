@@ -1,0 +1,13 @@
+scenario,point,ranks,metric,unit,predicted,measured,resolved,predicted_over_measured
+s1,4,4,barrier_release_ns,core-s,0.5455056,0.328113188,yes,1.66
+s1,16,16,barrier_release_ns,core-s,2.1820224,0.96168352,yes,2.27
+s1,32,32,barrier_release_ns,core-s,4.3640448,1.183539936,yes,3.69
+s2,0.5,1,phase_ns,core-s,0.240072,0.223709971,yes,1.07
+s2,2.0,1,phase_ns,core-s,0.240072,0.109402932,yes,2.19
+s3,,32,consume_ns_p50,core-s,27.92988672,0.33475696,yes,83.43
+s4,4,4,generation_release_ns,core-s,0.3385552,0.280237704,yes,1.21
+s4,4,4,durable_ns,us/file,423.194,203.362,yes,2.08
+s4,16,16,generation_release_ns,core-s,1.3542208,0.278073184,no,
+s4,16,16,durable_ns,us/file,423.194,45.378,yes,9.33
+s4,32,32,generation_release_ns,core-s,2.7084416,0.114845344,no,
+s4,32,32,durable_ns,us/file,423.194,-19.479,no,

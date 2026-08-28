@@ -1,0 +1,13 @@
+arm,metric,value_us
+dom,barrier_release_median,555.5
+dom,barrier_release_p10,364.6
+dom,barrier_release_p90,826.7
+dom,sum_over_20_rounds,12710.0
+ost,barrier_release_median,883.5
+ost,barrier_release_p10,699.6
+ost,barrier_release_p90,1230.6
+ost,sum_over_20_rounds,18790.0
+dom,sidecar_first_cold,299.0
+dom,sidecar_reread,90.4
+ost,sidecar_first_cold,653.7
+ost,sidecar_reread,84.6

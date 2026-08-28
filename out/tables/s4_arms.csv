@@ -1,0 +1,4 @@
+scale,default_generation_release_ns,default_predicted_ns,heuristic_generation_release_ns,heuristic_predicted_ns,size_generation_release_ns,size_predicted_ns,wait_generation_release_ns,wait_predicted_ns,spread,resolved,separated,captured_resolved,available,share_arm,indifferent,share_expected,size_indifferent,share_size
+4,388338768,0,390035125,0,363716694,169277600,318279342,338555200,21348556,yes,yes,no,70059426,,yes,0.4879,yes,
+16,376353234,0,365378246,0,386372182,677110400,358973660,1354220800,50497422,no,no,no,17379574,,yes,,yes,
+32,410844480,0,453278142,0,445094625,1354220800,407255563,2708441600,65665003,no,no,no,3588917,,yes,,yes,

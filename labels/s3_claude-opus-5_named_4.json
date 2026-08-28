@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "_consume reads each index file once per unit inside a budget_ns window broadcast from the producers' emit time, abandoning the unit as 'dropped' when probe.NS() - started > budget_ns, and only the consumer rank is issuing those reads (producers write, a different rank reads).",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "_report loops STATISTICS_READS=8 passes of probe.read_staged over each statistics file with no budget check, so the consumer rank stalls on each synchronous open/pread while other ranks are not waiting on that particular access.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 4,
+  "scenario": "s3",
+  "source_sha": "7925d2c40b88",
+  "usage": {
+    "input": 3921,
+    "output": 1391
+  }
+}

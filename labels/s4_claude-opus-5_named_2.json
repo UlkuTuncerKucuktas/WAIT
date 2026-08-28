@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "results",
+      "reason": "Each result is written with probe.write_staged, which open/write/fsync's and returns only once the data is durable, and this happens inside a generation loop bounded by barrier.wait() calls so every rank is held at the next barrier until the slowest rank's staged write finishes (generation_release_ns = max over ranks).",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "diagnostics",
+      "reason": "Diagnostics go through probe.write_buffered, which writes and closes with no fsync and whose timing is never recorded or gathered, so the write drains in the background while the rank proceeds to the next task and no other rank waits on it.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 2,
+  "scenario": "s4",
+  "source_sha": "6899bed0df27",
+  "usage": {
+    "input": 3247,
+    "output": 692
+  }
+}

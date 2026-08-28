@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "In _consume, each file is read once via probe.read_staged, but the loop checks 'if budget_ns and probe.NS()-started>budget_ns: return staged, True', aborting and marking the unit dropped if the broadcasted time budget is exceeded, and the surrounding barrier.broadcast()/barrier.wait() calls force every rank (producers and idle) to wait until the consumer's read finishes or times out before the next unit can start.",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "_report loops 'for _pass in range(CLASS_B_READS)' re-reading the exact same path_for(...) file 8 times per unit with no time-budget check, so the consumer simply blocks until all 8 reads finish, and the trailing barrier.wait() at the end of the unit loop holds every rank until that report completes.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 0,
+  "scenario": "s3",
+  "source_sha": "3e32ab8d7bae",
+  "usage": {
+    "input": 3933,
+    "output": 5894
+  }
+}

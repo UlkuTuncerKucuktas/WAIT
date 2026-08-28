@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "masks",
+      "reason": "In the measure loop the rank itself calls probe.read_staged on the class_a path and times it as 'gated' stall before probe.sleep_seconds(compute_s), so it waits on that single read of each file with no barrier holding other ranks.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "tiles",
+      "reason": "class_b items are read once each by the separate _prefetch process feeding a depth-8 multiprocessing.Queue, so the reads overlap the main loop's compute sleep rather than being awaited by any rank.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 4,
+  "scenario": "s2",
+  "source_sha": "57f8a88e7aec",
+  "usage": {
+    "input": 3103,
+    "output": 424
+  }
+}

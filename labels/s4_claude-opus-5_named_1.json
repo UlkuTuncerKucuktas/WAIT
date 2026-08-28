@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "results",
+      "reason": "probe.write_staged does open/write/fsync/close inline, so the rank stalls until the data is durable, and each generation is fenced by barrier.wait() so every rank is held at the synchronisation point until the slowest rank's staged write finishes.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "diagnostics",
+      "reason": "probe.write_buffered just opens, writes and closes with no fsync and its timing is never recorded, so the page-cache write drains behind ongoing task work and only the issuing rank touches its own per-rank g%d_t%d path once.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 1,
+  "scenario": "s4",
+  "source_sha": "6899bed0df27",
+  "usage": {
+    "input": 3247,
+    "output": 685
+  }
+}

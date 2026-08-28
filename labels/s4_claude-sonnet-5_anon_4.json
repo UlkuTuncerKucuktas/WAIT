@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "results",
+      "reason": "write_staged explicitly calls os.fsync before os.close, so the rank issuing it stops and waits for the write to become durable before moving to the next task; other ranks are not waiting because only a per-generation barrier.wait() synchronizes them, not each file access.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "diagnostics",
+      "reason": "write_buffered only calls os.write/os.close with no os.fsync, so the data is left in the OS buffer cache and the rank continues immediately, overlapping the I/O with the rest of the loop; other ranks proceed independently since the only synchronization point is the per-generation barrier.wait(), not each file access.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 4,
+  "scenario": "s4",
+  "source_sha": "ea2be59a87e8",
+  "usage": {
+    "input": 3245,
+    "output": 1323
+  }
+}

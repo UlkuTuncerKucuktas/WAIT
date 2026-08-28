@@ -1,0 +1,40 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "manifest",
+      "reason": "In measure() the read of manifest(workdir,r,placing) is bracketed by barrier.wait() calls immediately before and after the _read_staged call, so every rank is held at the second barrier until the slowest rank's manifest read finishes, and each round reads a distinct file 'm%d'%round_index so a given manifest file is read only once per rank.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "sidecar",
+      "reason": "The sidecar reads (_read(sidecar(workdir,me,i,placing),...)) happen after the manifest's closing barrier.wait() and before the next round's barrier.wait(), so each rank performs its own sidecar reads while other ranks are doing their own work rather than being held at a sync point, and since this loop body executes once per round (ROUNDS=200) the same sidecar file (fixed rank, fixed index) is read 200 times.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "shard",
+      "reason": "Shard reads (_read(shard(workdir,me,i),...)) occur in the same unsynchronized segment as the sidecar reads, between the manifest barrier and the next round's barrier, so only the accessing rank blocks on each shard read, and because this happens inside the same per-round loop (ROUNDS=200) each shard file is read 200 times by its owning rank.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 4,
+  "scenario": "s1",
+  "source_sha": "34a2f6d580ef",
+  "usage": {
+    "input": 4270,
+    "output": 3703
+  }
+}

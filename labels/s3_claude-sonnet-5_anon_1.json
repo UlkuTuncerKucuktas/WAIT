@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "In _consume the read stops as soon as 'probe.NS() - started > budget_ns', a budget derived from producer-rank-0's write time via barrier.broadcast, so each class_a file is read at most once and only if it fits the deadline, and the unconditional barrier.wait() at the end of every unit forces every rank (producers, consumer, idle) to stall until this bounded read finishes.",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "_report loops 'for _pass in range(CLASS_B_READS)' re-reading the exact same file path 8 times with no time-budget check, so the consumer rank blocks until all 8 reads finish, and because barrier.wait() is called unconditionally by every rank after this loop, all other ranks (producers, idle) are held until it completes.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 1,
+  "scenario": "s3",
+  "source_sha": "3e32ab8d7bae",
+  "usage": {
+    "input": 3933,
+    "output": 9954
+  }
+}

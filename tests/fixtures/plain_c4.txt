@@ -1,0 +1,13 @@
+/arf/scratch/ukucuktas/fixtures/plain/f
+lmm_stripe_count:  4
+lmm_stripe_size:   1048576
+lmm_pattern:       raid0
+lmm_layout_gen:    0
+lmm_stripe_offset: 28
+lmm_pool:          flash
+	obdidx		 objid		 objid		 group
+	    28	     122257552	    0x7498090	   0x940000bd0
+	    29	     117482659	    0x700a4a3	   0x9c0000bd0
+	    24	     120465447	    0x72e2827	   0x900000bd0
+	    25	     122031249	    0x7460c91	   0x980000bd0
+

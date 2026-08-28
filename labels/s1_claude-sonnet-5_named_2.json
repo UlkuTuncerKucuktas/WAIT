@@ -1,0 +1,40 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "manifest",
+      "reason": "Each round brackets the manifest read between barrier.wait() calls, so every rank sits at the following barrier until the slowest rank's manifest read completes, and each round uses a distinct manifest path (manifest(workdir, r, placing)) so a given file is only read once by a rank.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "sidecar",
+      "reason": "The sidecar reads happen in a plain for-loop after the manifest barriers with no synchronization primitive, so a rank blocks only itself on os.pread via _read while other ranks continue their own loop iterations, and since the same sidecar path (independent of round index r) is re-read inside the outer 'for r in range(cell.rounds)' loop, a given file is accessed ROUNDS=200 times by that rank.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "shard",
+      "reason": "Like the sidecar loop, the shard reads use _read with no barrier around them, so only the calling rank waits on the open/pread/close sequence, and because shard(workdir, me, i) does not depend on the round index, the same shard file is re-read once per round for all ROUNDS=200 rounds by that rank.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 2,
+  "scenario": "s1",
+  "source_sha": "34a2f6d580ef",
+  "usage": {
+    "input": 4270,
+    "output": 2411
+  }
+}

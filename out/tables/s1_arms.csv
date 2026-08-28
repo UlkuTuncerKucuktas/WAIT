@@ -1,0 +1,4 @@
+scale,default_barrier_release_ns,default_predicted_ns,heuristic_barrier_release_ns,heuristic_predicted_ns,size_barrier_release_ns,size_predicted_ns,wait_barrier_release_ns,wait_predicted_ns,spread,resolved,separated,captured_resolved,available,share_arm,indifferent,share_expected,size_indifferent,share_size
+4,198367825,0,195052164,136376400,161053387,340941000,116339528,545505600,27538824,yes,yes,no,82028297,,no,,yes,0.4549
+16,173120699,0,171055193,136376400,146362647,1138061058,113015479,2182022400,15774814,yes,yes,no,60105220,,no,,yes,0.4452
+32,152308646,0,159915048,136376400,147970802,1742208510,115323023,4364044800,21374535,yes,yes,no,36985623,,no,,yes,

@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "_consume reads each class_a file once via probe.read_staged but aborts with missed=True when probe.NS()-started exceeds the broadcast budget_ns, and the producers sit at the end-of-unit barrier.wait() while the consumer reads, so the timed read holds the whole job.",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "_report re-reads every class_b file in CLASS_B_READS=8 passes with no budget_ns check, and all other ranks are stalled at the per-unit barrier.wait() until those reads finish.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 2,
+  "scenario": "s3",
+  "source_sha": "3e32ab8d7bae",
+  "usage": {
+    "input": 3933,
+    "output": 786
+  }
+}

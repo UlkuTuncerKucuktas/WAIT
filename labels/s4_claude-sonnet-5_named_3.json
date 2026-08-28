@@ -1,0 +1,32 @@
+{
+  "anonymised": false,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "results",
+      "reason": "write_staged() explicitly calls os.fsync(fd) after the write, so the rank issuing it must wait for the data to be durable before returning, and this happens inside the per-rank task loop with no barrier per file, so only the writing rank stalls.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "diagnostics",
+      "reason": "write_buffered() only does os.write then os.close with no fsync, so the write can be buffered by the OS and overlaps with the rank's subsequent task-loop work, and since each rank writes its own g%d_t%d file independently between barrier.wait() calls, no other rank is blocked by it.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "named",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 3,
+  "scenario": "s4",
+  "source_sha": "6899bed0df27",
+  "usage": {
+    "input": 3247,
+    "output": 1499
+  }
+}

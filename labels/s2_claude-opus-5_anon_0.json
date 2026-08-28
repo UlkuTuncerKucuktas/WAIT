@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "masks",
+      "reason": "In the main loop the rank itself calls probe.read_staged on class_a and its latency is accumulated as 'gated'/'class_a_stall_ns' before compute proceeds, so the reading rank stalls on its own single read of each file (one read per file index i).",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 1,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "tiles",
+      "reason": "class_b is read by the separate _prefetch multiprocessing.Process feeding a bounded queue while the main loop reads class_a and sleeps for compute_s, so each file's single read is overlapped with computation rather than blocking any rank.",
+      "regime": "hidden"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-opus-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 0,
+  "scenario": "s2",
+  "source_sha": "57f8a88e7aec",
+  "usage": {
+    "input": 3103,
+    "output": 505
+  }
+}

@@ -1,0 +1,4 @@
+window,mdt_delta_kib,note
+idle_15s_first,888,background drift from other tenants
+idle_15s_second,1936,background drift from other tenants
+5000_dom_files_4kib,20776,predicted 20000 (+3.9 percent inode overhead)

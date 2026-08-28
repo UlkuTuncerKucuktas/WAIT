@@ -1,0 +1,40 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "manifest",
+      "reason": "The read `_read_staged(class_a(...))` sits directly between two consecutive `barrier.wait()` calls with nothing else in between, so every rank must reach the second barrier before any can proceed, meaning the whole job waits on the slowest rank's class_a read; it's a synchronous os.pread with no overlap so the calling rank blocks on it; and since the path uses `m%d % round_index`, each of the 200 rounds targets a distinct file, so any single file is only accessed once.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "sidecar",
+      "reason": "class_c files are read via the plain blocking `_read()` call inside a per-rank for-loop that runs after the round's barrier and before the class_b loop with no barrier isolating it, so while one rank reads its class_c files the others are doing their own class_c/class_b work rather than waiting (couples_all_ranks=false); the read call itself (os.pread) is synchronous (blocking); and the same file `class_c(workdir, me, i, placing)` is read once per round for all `cell.rounds` (=200) rounds, giving 200 accesses per file with no deadline logic.",
+      "regime": "blocking"
+    },
+    {
+      "accesses": 200,
+      "couples_all_ranks": false,
+      "has_deadline": false,
+      "name": "shard",
+      "reason": "class_b files are read with the same synchronous `_read()` call in a loop that follows the class_c loop with no intervening barrier, so other ranks are still processing their own class_c/class_b reads rather than waiting on this specific access (couples_all_ranks=false); the os.pread call blocks the issuing rank until it returns (blocking); each `class_b(workdir, me, i)` file is read once per round across all 200 rounds, giving 200 accesses per file, and there is no time-window/deadline requirement in the code.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 2,
+  "scenario": "s1",
+  "source_sha": "7236821e1547",
+  "usage": {
+    "input": 4289,
+    "output": 6802
+  }
+}

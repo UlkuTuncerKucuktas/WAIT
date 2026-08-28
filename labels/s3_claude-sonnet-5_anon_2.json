@@ -1,0 +1,32 @@
+{
+  "anonymised": true,
+  "classes": [
+    {
+      "accesses": 1,
+      "couples_all_ranks": true,
+      "has_deadline": true,
+      "name": "index",
+      "reason": "In _consume the read of each class_a file is aborted once 'probe.NS() - started > budget_ns', a hard per-unit time window derived from the producer's broadcast timing, so the read (called exactly once per file via read_staged) either finishes inside that window or the remaining files are dropped, while producers/idle ranks are already parked at the shared barrier.broadcast()/barrier.wait() calls waiting for this bounded read to resolve before the unit can advance.",
+      "regime": "deadline"
+    },
+    {
+      "accesses": 8,
+      "couples_all_ranks": true,
+      "has_deadline": false,
+      "name": "statistics",
+      "reason": "_report reads each class_b file CLASS_B_READS (8) times per unit via the nested 'for _pass in range(CLASS_B_READS): ... probe.read_staged(...)' loop with no time bound, and it only executes after _consume finishes, with the other ranks already sitting at the common barrier.wait() doing nothing but waiting for the consumer's unbounded read loop to complete before the next unit starts.",
+      "regime": "blocking"
+    }
+  ],
+  "condition": "anon",
+  "git_rev": "4a6f073",
+  "model": "claude-sonnet-5",
+  "prompt_sha": "0bc1cd187d96",
+  "run": 2,
+  "scenario": "s3",
+  "source_sha": "3e32ab8d7bae",
+  "usage": {
+    "input": 3933,
+    "output": 14471
+  }
+}
